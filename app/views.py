@@ -9,6 +9,13 @@ from app.forms import UploadForm
 from werkzeug.security import check_password_hash
 from flask_login import login_required
 from werkzeug.utils import secure_filename
+from flask import send_from_directory
+
+
+def get_uploaded_image():
+    uploads_dir = os.path.join(app.config['UPLOAD_FOLDER'])
+    uploaded_images = [f for f in os.listdir(uploads_dir) if os.path.isfile(os.path.join(uploads_dir, f))]
+    return uploaded_images
 
 
 ###
@@ -28,22 +35,31 @@ def about():
 
 
 @app.route('/upload', methods=['POST', 'GET'])
+@login_required
 def upload():
-    # Instantiate your form class
     form = UploadForm()
 
-    # Validate file upload on submit
     if form.validate_on_submit():
-        # Get file data and save to your uploads folder
         f = form.image.data
         filename = secure_filename(f.filename)
         f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        
         flash('File Saved', 'success')
-        return redirect(url_for('home')) # Update this to redirect the user to a route that displays all uploaded image files
+        return redirect(url_for('home'))  # or some route where you display images
 
-    return render_template('upload.html')
+    return render_template('upload.html', form=form)
+
+
+
+@app.route('/uploads/<filename>')
+def get_image(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+@app.route('/files')
+@login_required
+def files():
+    images = get_uploaded_image()
+    return render_template('files.html', images=images)
 
 
 @app.route('/login', methods=['POST', 'GET'])
