@@ -53,13 +53,14 @@ def upload():
 
 @app.route('/uploads/<filename>')
 def get_image(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    app.config['UPLOAD_FOLDER'] = 'uploads'
+    return send_from_directory(app.config['uploads'], filename)
 
-@app.route('/files')
-@login_required
-def files():
-    images = get_uploaded_image()
-    return render_template('files.html', images=images)
+# @app.route('/files')
+# @login_required
+# def files():
+#     images = get_uploaded_image()
+#     return render_template('files.html', images=images)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -101,6 +102,12 @@ def login():
 def load_user(id):
     return db.session.execute(db.select(UserProfile).filter_by(id=id)).scalar()
 
+
+@app.route('/files')
+@login_required
+def files():
+    images = get_uploaded_image()
+    return render_template('files.html', images= images)
 ###
 # The functions below should be applicable to all Flask apps.
 ###

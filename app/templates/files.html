@@ -1,0 +1,6 @@
+{% for image_filename in images %}
+    <img src="{{ url_for('upload', filename=image_filename.png) }}" alt="Uploaded Image"/>
+
+    <!-- <img src="{{ url_for('get_image', filename=f) }}" alt="Uploaded Image"/> -->
+
+{% endfor %}
