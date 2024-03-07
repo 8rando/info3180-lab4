@@ -50,11 +50,10 @@ def upload():
     return render_template('upload.html', form=form)
 
 
-
 @app.route('/uploads/<filename>')
 def get_image(filename):
-    app.config['UPLOAD_FOLDER'] = 'uploads'
-    return send_from_directory(app.config['uploads'], filename)
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 
 # @app.route('/files')
 # @login_required
