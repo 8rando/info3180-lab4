@@ -1,6 +1,13 @@
-{% for f in images %}
-    <img src="{{ url_for('get_image', filename=f) }}" alt="Uploaded Image"/>
+ 
+ <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/app.css') }}">
 
-    <!-- <img src="{{ url_for('get_image', filename=f) }}" alt="Uploaded Image"/> -->
 
-{% endfor %}
+
+ <div class="image-grid">
+     {% for f in images %}
+         <div class="image-item">
+             <img src="{{ url_for('get_image', filename=f) }}"/>
+         </div>
+     {% endfor %}
+ </div>
+
