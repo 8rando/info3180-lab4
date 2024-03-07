@@ -15,16 +15,24 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ url_for('upload') }}">File Upload</a>
         </li>
+        <!-- Conditionally render View Images if the user is authenticated -->
+        {% if current_user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('files') }}">View Images</a>
+        </li>
+        {% endif %}
       </ul>
       <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-        </li>
-        <li></li>
-        <ul class="navbar-nav">
+        <!-- Change this part to show Login or Logout depending on the user's authentication state -->
+        {% if current_user.is_authenticated %}
           <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('files') }}">View Images</a>
+              <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
           </li>
+        {% else %}
+          <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+          </li>
+        {% endif %}
       </ul>
     </div>
   </div>

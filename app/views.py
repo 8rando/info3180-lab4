@@ -10,6 +10,7 @@ from werkzeug.security import check_password_hash
 from flask_login import login_required
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
+from flask_login import current_user
 
 
 def get_uploaded_image():
@@ -102,6 +103,12 @@ def load_user(id):
     return db.session.execute(db.select(UserProfile).filter_by(id=id)).scalar()
 
 
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.')
+    return redirect(url_for('home'))
 @app.route('/files')
 @login_required
 def files():
